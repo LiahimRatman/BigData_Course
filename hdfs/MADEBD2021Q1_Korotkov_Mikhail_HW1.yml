@@ -1,0 +1,54 @@
+beginner.how_many_items_in_hdfs:
+  stdin: "9"
+intermediate.hdfs_list_recursively:
+  stdin: "hdfs dfs -ls -R /data/wiki"
+intermediate.hdfs_list_recursively_human_readable:
+  stdin: "hdfs dfs -ls -R -h /data/wiki"
+intermediate.hdfs_file_replication_factor:
+  stdin: "3"
+intermediate.hdfs_folder_replication_factor:
+  stdin: "0"
+intermediate.hdfs_describe_size:
+  stdin: "actual"
+intermediate.hdfs_cumulative_size:
+  stdin: "hdfs dfs -du -h -s /data/wiki"
+intermediate.hdfs_create_folder:
+  stdin: "hdfs dfs -mkdir m.korotkov"
+intermediate.hdfs_create_nested_folder:
+  stdin: "hdfs dfs -mkdir -p m.korotkov/folder1/folder2"
+intermediate.hdfs_remove_nested_folders:
+  stdin: "hdfs dfs -rm -r m.korotkov/folder1/folder2"
+intermediate.hdfs_trash_behavior:
+  # The Hadoop trash feature helps prevent accidental deletion of files and directories
+  # /trash директория в которую помещается файл до его физического удаления
+  stdin: "hdfs dfs -rm -r -skipTrash m.korotkov/folder1/folder2"
+intermediate.hdfs_create_empty_file:
+  stdin: "hdfs dfs -touchz m.korotkov"
+intermediate.hdfs_create_small_file:
+  stdin: "scp -r /home/mikhail/Desktop/na_koroktkov_file.txt mail_2021q1@brain-client.bigdatateam.org:~/ && hdfs dfs -put ma_korotkov_file.txt /user/mail_2021q1"
+intermediate.hdfs_output_file:
+  stdin: "hdfs dfs -cat ma_korotkov_file.txt"
+intermediate.hdfs_output_file_end:
+  stdin: "hdfs dfs -tail ma_korotkov_file.txt"
+intermediate.hdfs_output_file_start:
+  stdin: "hdfs dfs -cat ma_korotkov_file.txt|head"
+intermediate.hdfs_tail_vs_unix_tail:
+  stdin: "tail -c 1024 ma_korotkov_file.txt"
+intermediate.hdfs_copy_file:
+  stdin: "hdfs dfs -cp ma_korotkov_file.txt ma_korotkov_file_copied.txt"
+intermediate.hdfs_move_file:
+  stdin: "hdfs dfs -mv ma_korotkov_file_copied.txt m.korotkov/"
+intermediate.hdfs_download_and_concatenate:
+  stdin: "hdfs dfs -getmerge ma_korotkov_file.txt m.korotkov/ma_korotkov_file_copied.txt ma_korotkov_sample_merged.txt"
+advanced.hdfs_set_file_replication:
+  stdin: "hdfs dfs -setrep -w 3 ma_korotkov_file_copied.txt"
+advanced.hdfs_get_files_and_block:
+  stdin: "hdfs fsck /user/mail_2021q1/ -files -blocks -locations"
+advanced.hdfs_get_block_information:
+  stdin: "hdfs fsck -blockId blk_1079538599"
+advanced.webhdfs_curl_follow_redirects:
+    stdin: "curl -i -r 0-100 -L 'http://brain-master:50070/webhdfs/v1/user/mail_2021q1/ma_korotkov_file.txt?op=OPEN&user.name=mail_2021q1'"
+advanced.webhdfs_get_file_detailed_information:
+    stdin: "curl -i  'http://brain-master:50070/webhdfs/v1/user/mail_2021q1/ma_korotkov_file.txt?op=GETFILESTATUS&user.name=mail_2021q1'"
+advanced.webhdfs_change_file_replication:
+    stdin: "curl -i -X PUT 'http://brain-master:50070/webhdfs/v1/user/mail_2021q1/ma_korotkov_file.txt?op=SETREPLICATION&replication=2&user.name=mail_2021q1'"
